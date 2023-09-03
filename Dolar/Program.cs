@@ -1,4 +1,8 @@
-﻿using iTextSharp.text;
+﻿using System;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 
 internal class Program
@@ -8,6 +12,7 @@ internal class Program
         var apiKey = "apikey";
         var baseCurrency = "USD";
         var apiUrl = $"https://v6.exchangerate-api.com/v6/{apiKey}/latest/{baseCurrency}";
+
         try
         {
             using (var httpClient = new HttpClient())
@@ -17,11 +22,10 @@ internal class Program
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    // Aquí tienes la respuesta en formato JSON. Puedes procesarla según tus necesidades.
                     Console.WriteLine(responseContent);
 
-                    // Guardar la respuesta como archivo PDF
                     var pdfFileName = "exchange_rates.pdf";
+
                     using (var fs = new FileStream(pdfFileName, FileMode.Create))
                     {
                         var document = new Document();
